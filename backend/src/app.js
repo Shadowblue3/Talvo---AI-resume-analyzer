@@ -10,7 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin:"https://talvo-ai-resume-analyzer.vercel.app/",
+    origin:"https://talvo-ai-resume-analyzer.vercel.app",
     // origin:"http://localhost:5173", -> For testing
     credentials: true
 }))
