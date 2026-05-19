@@ -3,7 +3,7 @@ import axios from "axios"
 
 //This is an axios instance and now can be used for any functions, without repeting the same lines of code
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://talvo-ai-resume-analyzer.onrender.com",
     withCredentials: true
 })
 
