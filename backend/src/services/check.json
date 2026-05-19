@@ -1,0 +1,20 @@
+{
+    "candidate_name": "Sam Developer",
+    "position": "Full Stack Software Engineering Intern",
+    "evaluation_summary": "Sam is an exceptionally strong candidate who perfectly aligns with the 'hacker' and 'competitive programmer' profile requested in the job description. He demonstrates proficiency across the entire MERN stack, has direct experience with the specific AWS services mentioned, and shows a high level of technical initiative through AI-integrated projects and custom Linux configurations.",
+    "overall_rating": 9.5,
+    "recommendation": "Strong Hire",
+    "technical_skills_assessment": "The candidate meets all core language requirements, specifically C++ and JavaScript. His experience with JWT authentication and RESTful APIs is evident through his project work. His active participation in competitive programming on platforms like Codeforces validates the requirement for strong algorithmic foundations.",
+    "cultural_fit": "With his self-described passion for i3wm and custom X11 environments, Sam fits the 'power user' profile perfectly. His success as a Smart India Hackathon finalist suggests he thrives in high-pressure, collaborative development environments.",
+    "key_strengths": [
+        "Direct experience with AWS Elastic Beanstalk and S3",
+        "Strong algorithmic background through competitive programming",
+        "Proficient in the MERN stack and AI integration",
+        "Self-driven learner with a deep interest in low-level OS customization"
+    ],
+    "areas_for_growth": [
+        "Professional experience is limited to personal and hackathon projects due to current student status",
+        "May require mentoring to translate competitive programming skills into enterprise-grade clean code practices"
+    ],
+    "interview_verdict": "Sam's technical stack is a 1:1 match for the role requirements. His proactive approach to building tools like ML-wand and creAItr suggests he will be a highly productive intern who can work independently with minimal hand-holding on the cloud and web infrastructure."
+}

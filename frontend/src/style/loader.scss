@@ -1,0 +1,127 @@
+:root {
+    --bg-color: #05070a;
+    --accent-glow: #00f2ff;
+    --secondary-glow: #7000ff;
+    --loader-size: 80px;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.loader-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* The pulsing rings */
+.pulse {
+    position: absolute;
+    width: var(--loader-size);
+    height: var(--loader-size);
+    border: 2px solid var(--accent-glow);
+    border-radius: 50%;
+    opacity: 0;
+    animation: pulse-animation 2s infinite;
+}
+
+.pulse:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+/* The central Hexagon/AI Core */
+.ai-core {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-glow);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    box-shadow: 0 0 30px var(--accent-glow);
+    animation: rotate-core 4s linear infinite;
+    z-index: 2;
+}
+
+/* Scanning line effect */
+.scanner {
+    position: absolute;
+    top: -10px;
+    width: calc(var(--loader-size) + 20px);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+    animation: scan 2.5s ease-in-out infinite;
+}
+
+.loading-text {
+    color: var(--accent-glow);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 12px;
+    font-weight: 300;
+    text-shadow: 0 0 10px var(--accent-glow);
+    animation: blink 1.5s infinite;
+}
+
+/* Animations */
+@keyframes pulse-animation {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+@keyframes rotate-core {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+@keyframes scan {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateY(100px);
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}

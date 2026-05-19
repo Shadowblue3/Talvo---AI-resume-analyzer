@@ -1,0 +1,408 @@
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+
+// ── Variables ────────────────────────────────────────────────────────────────
+$bg-void:        #050608;
+$bg-surface:     #0c0d10;
+$bg-card:        #111318;
+$bg-card-hover:  #161820;
+$border-subtle:  rgba(255, 255, 255, 0.06);
+
+$accent-cyan:    #63d2ff;
+$accent-blue:    #4a8fff;
+$accent-violet:  #9b6dff;
+$text-primary:   #e8eaf0;
+$text-secondary: #7a7f8e;
+$text-muted:     #565b6b;
+
+$font-display: 'Syne', sans-serif;
+$font-mono:    'DM Mono', monospace;
+
+// ── Reset & Base ─────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+// ── Main Layout ──────────────────────────────────────────────────────────────
+.talvo-landing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: $bg-void;
+  font-family: $font-display;
+  overflow: hidden;
+  position: relative;
+  color: $text-primary;
+
+  // Ambient background glow blobs
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::before {
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    left: -150px;
+    background: radial-gradient(circle, rgba($accent-violet, 0.08) 0%, transparent 70%);
+  }
+
+  &::after {
+    width: 700px;
+    height: 700px;
+    bottom: -200px;
+    right: -100px;
+    background: radial-gradient(circle, rgba($accent-cyan, 0.06) 0%, transparent 70%);
+  }
+
+  .noise-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(255,255,255,0.4) 40px),
+      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(255,255,255,0.4) 40px);
+  }
+}
+
+// ── Hero Container ───────────────────────────────────────────────────────────
+.hero-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 300px;
+}
+
+// ── Left Column: Content ─────────────────────────────────────────────────────
+.hero-content {
+  flex: 1;
+  max-width: 540px;
+  animation: fade-right 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  .brand-header {
+    margin-bottom: 40px;
+  }
+
+  .brand-logo {
+    font-size: 84px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: $accent-cyan;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .brand-subtitle {
+    font-family: $font-mono;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: $text-muted;
+  }
+
+  .main-heading {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .description {
+    font-family: $font-mono;
+    font-size: 15px;
+    color: $text-secondary;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .cta-group {
+    display: flex;
+    gap: 20px;
+
+    .btn {
+      font-family: $font-display;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .btn-primary {
+      background: $accent-violet;
+      color: #fff;
+      border: none;
+      box-shadow: 0 8px 24px rgba($accent-violet, 0.25);
+
+      &:hover {
+        background: color.scale($accent-violet, $lightness: 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba($accent-violet, 0.35);
+      }
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: $accent-cyan;
+      border: 1px solid rgba($accent-cyan, 0.3);
+
+      &:hover {
+        background: rgba($accent-cyan, 0.05);
+        border-color: $accent-cyan;
+      }
+    }
+  }
+}
+
+// ── Right Column: Illustration ───────────────────────────────────────────────
+.hero-illustration {
+  flex: 1;
+  position: relative;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-left 0.8s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  // 1. Resume Card
+  .resume-card {
+    width: 320px;
+    height: 400px;
+    background: $bg-card;
+    border: 1px solid $border-subtle;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 2;
+
+    .resume-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $accent-violet;
+        opacity: 0.8;
+      }
+      .name-line {
+        height: 12px;
+        width: 120px;
+        background: $text-muted;
+        border-radius: 6px;
+        opacity: 0.5;
+      }
+    }
+
+    .resume-section {
+      margin-bottom: 30px;
+
+      .section-title {
+        font-family: $font-mono;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: $accent-cyan;
+        margin-bottom: 12px;
+      }
+
+      .text-line {
+        height: 6px;
+        background: $text-secondary;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        opacity: 0.3;
+
+        &.long { width: 100%; }
+        &.medium { width: 75%; }
+        &.short { width: 40%; }
+      }
+    }
+  }
+
+  // 2. Abstract Robot (Simplified CSS Art)
+  .abstract-robot {
+    position: absolute;
+    top: 20px;
+    left: -40px;
+    z-index: 1;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+
+    .robot-head {
+      width: 80px;
+      height: 60px;
+      border: 2px solid $border-subtle;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: $bg-surface;
+
+      .eye {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: transparent;
+        border: 2px solid $accent-blue;
+        box-shadow: 0 0 10px $accent-blue;
+      }
+    }
+    .robot-body {
+      width: 60px;
+      height: 70px;
+      border: 2px solid $border-subtle;
+      border-radius: 12px;
+      margin: 10px auto 0;
+      background: $bg-surface;
+      position: relative;
+      overflow: hidden;
+
+      .scanner-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: $accent-cyan;
+        box-shadow: 0 0 8px $accent-cyan;
+        animation: scan 3s linear infinite;
+      }
+    }
+  }
+
+  // 3. Floating Badges
+  .floating-badges {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+
+    .badge {
+      position: absolute;
+      font-family: $font-mono;
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: $bg-surface;
+      border: 1px solid;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      animation: float 4s ease-in-out infinite alternate;
+
+      &.badge-cyan {
+        color: $accent-cyan;
+        border-color: rgba($accent-cyan, 0.3);
+      }
+      &.badge-violet {
+        color: $accent-violet;
+        border-color: rgba($accent-violet, 0.3);
+        animation-delay: -1s;
+      }
+      &.badge-blue {
+        color: $accent-blue;
+        border-color: rgba($accent-blue, 0.3);
+        animation-delay: -2s;
+      }
+    }
+  }
+
+  // 4. Score Indicator
+  .score-indicator {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    z-index: 4;
+    background: $bg-surface;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .score-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+
+      .ring-bg {
+        fill: none;
+        stroke: $border-subtle;
+        stroke-width: 8;
+      }
+      .ring-progress {
+        fill: none;
+        stroke: url(#cyan-gradient); // Optional: Define gradient in HTML, fallback to solid
+        stroke: $accent-cyan;
+        stroke-width: 8;
+        stroke-dasharray: 283; // 2 * pi * 45
+        stroke-dashoffset: 17; // Represents 94%
+        stroke-linecap: round;
+        filter: drop-shadow(0 0 4px rgba($accent-cyan, 0.5));
+      }
+    }
+
+    .score-text {
+      text-align: center;
+      .number {
+        display: block;
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+      }
+      .label {
+        display: block;
+        font-family: $font-mono;
+        font-size: 9px;
+        color: $text-secondary;
+        letter-spacing: 0.1em;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+// ── Keyframes ────────────────────────────────────────────────────────────────
+@keyframes fade-right {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fade-left {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+  0%   { transform: translateY(0px); }
+  100% { transform: translateY(-15px); }
+}
+
+@keyframes scan {
+  0%   { top: 0; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}

@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+
+// ── Variables ────────────────────────────────────────────────────────────────
+$bg-void:        #050608;
+$bg-surface:     #0c0d10;
+$bg-card:        #111318;
+$bg-card-hover:  #161820;
+$border-subtle:  rgba(255, 255, 255, 0.06);
+$border-glow:    rgba(99, 210, 255, 0.35);
+$border-active:  rgba(99, 210, 255, 0.7);
+
+$accent-cyan:    #63d2ff;
+$accent-blue:    #4a8fff;
+$accent-violet:  #9b6dff;
+$text-primary:   #e8eaf0;
+$text-secondary: #7a7f8e;
+$text-muted:     #3d4150;
+
+$font-display: 'Syne', sans-serif;
+$font-mono:    'DM Mono', monospace;
+
+$radius-card:  18px;
+$radius-input: 10px;
+$radius-btn:   10px;
+
+// ── Reset & Base ─────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+// ── Main Layout ──────────────────────────────────────────────────────────────
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: $bg-void;
+  font-family: $font-display;
+  overflow: hidden;
+  position: relative;
+
+  // Ambient background glow blobs
+  &::before,
+  &::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::before {
+    width: 520px;
+    height: 520px;
+    top: -140px;
+    left: -100px;
+    background: radial-gradient(circle, rgba($accent-violet, 0.12) 0%, transparent 70%);
+    animation: drift-a 14s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    width: 480px;
+    height: 480px;
+    bottom: -120px;
+    right: -80px;
+    background: radial-gradient(circle, rgba($accent-cyan, 0.10) 0%, transparent 70%);
+    animation: drift-b 18s ease-in-out infinite alternate;
+  }
+}
+
+// ── Grid noise texture overlay ────────────────────────────────────────────
+main > .noise-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image:
+    repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(255,255,255,0.4) 40px),
+    repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(255,255,255,0.4) 40px);
+}
+
+// ── Form Container Card ───────────────────────────────────────────────────
+.form-container {
+  position: relative;
+  z-index: 1;
+  // Increase this value to make the card wider (e.g., 480px, 500px, or 520px)
+  width: 500px; 
+  
+  padding: 48px 44px 52px;
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-card;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba($accent-cyan, 0.04);
+  animation: card-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  // Shimmer top edge
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $radius-card;
+    background: linear-gradient(135deg,
+      rgba($accent-cyan, 0.07) 0%,
+      transparent 50%,
+      rgba($accent-violet, 0.05) 100%
+    );
+    pointer-events: none;
+  }
+
+  // Glowing top border line
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $accent-cyan, $accent-violet, transparent);
+    border-radius: 100%;
+    opacity: 0.5;
+  }
+
+  // ── Headings ──────────────────────────────────────────────────────────────
+
+.brand {
+  font-family: $font-display;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  display: inline-block;
+  background: linear-gradient(120deg, $text-primary 20%, $accent-cyan 60%, $accent-violet 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 4px;
+  animation: fade-up 0.5s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.login-label {
+  font-family: $font-mono;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $text-secondary;
+  margin-bottom: 2px;
+  animation: fade-up 0.5s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+  // Tagline under heading
+  .tagline {
+    font-family: $font-mono;
+    font-size: 12px;
+    color: $text-muted;
+    margin-bottom: 36px;
+    animation: fade-up 0.5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+// ── Input Group ───────────────────────────────────────────────────────────
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  &:nth-child(1) { animation-delay: 0.25s; }
+  &:nth-child(2) { animation-delay: 0.32s; }
+
+  label {
+    font-family: $font-mono;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $text-secondary;
+    transition: color 0.25s ease;
+  }
+
+  input {
+    width: 100%;
+    padding: 13px 16px;
+    background: $bg-surface;
+    border: 1px solid $border-subtle;
+    border-radius: $radius-input;
+    color: $text-primary;
+    font-family: $font-mono;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition:
+      border-color 0.3s ease,
+      background 0.3s ease,
+      box-shadow 0.3s ease;
+    caret-color: $accent-cyan;
+
+    &::placeholder {
+      color: $text-muted;
+      font-size: 13px;
+    }
+
+    &:hover {
+      border-color: rgba($accent-cyan, 0.25);
+      background: rgba($accent-cyan, 0.02);
+    }
+
+    &:focus {
+      border-color: $border-active;
+      background: rgba($accent-cyan, 0.04);
+      box-shadow:
+        0 0 0 3px rgba($accent-cyan, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      // Lift the label color on focus via sibling trick
+      & ~ label { color: $accent-cyan; }
+    }
+  }
+
+  // Label color when input is focused — using :focus-within on the group
+  &:focus-within label {
+    color: $accent-cyan;
+  }
+}
+
+// ── Forgot password link ──────────────────────────────────────────────────
+.forgot {
+  font-family: $font-mono;
+  font-size: 11px;
+  color: $text-muted;
+  text-decoration: none;
+  text-align: right;
+  display: block;
+  margin-top: -8px;
+  transition: color 0.2s ease;
+  animation: fade-up 0.5s 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  &:hover { color: $accent-cyan; }
+}
+
+
+// ── Divider / footer ──────────────────────────────────────────────────────
+.login-footer {
+  margin-top: 28px;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: 12px;
+  color: $text-muted;
+  animation: fade-up 0.5s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  a {
+    color: $accent-cyan;
+    text-decoration: none;
+    position: relative;
+    transition: opacity 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 1px;
+      background: $accent-cyan;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    &:hover {
+      opacity: 0.85;
+      &::after { transform: scaleX(1); }
+    }
+  }
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes drift-a {
+  from { transform: translate(0,   0)   scale(1);    }
+  to   { transform: translate(60px, 80px) scale(1.1); }
+}
+
+@keyframes drift-b {
+  from { transform: translate(0,   0)   scale(1);    }
+  to   { transform: translate(-50px, -60px) scale(1.08); }
+}

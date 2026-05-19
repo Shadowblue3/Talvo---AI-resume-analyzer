@@ -1,0 +1,418 @@
+@use "sass:color";
+
+// ── Shared Variables ──
+$bg-void:        #050608;
+$bg-surface:     #0c0d10;
+$bg-card:        #111318;
+$border-subtle:  rgba(255, 255, 255, 0.06);
+
+$accent-cyan:    #63d2ff;
+$accent-violet:  #9b6dff;
+$text-primary:   #e8eaf0;
+$text-secondary: #7a7f8e;
+$text-muted:     #565b6b;
+
+// Severity Colors
+$alert-red:      #ff5c5c;
+$alert-orange:   #ffb84d;
+$alert-green:    #4ade80;
+
+$font-display: 'Syne', sans-serif;
+$font-mono:    'DM Mono', monospace;
+
+// ── Page Wrapper & Header ──────────────────────────────────────
+.report-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.report-main-header {
+  font-family: $font-display;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  background: linear-gradient(120deg, $text-primary 30%, $accent-cyan 80%, $accent-violet 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// ── Container & Grid Layout ────────────────────────────────────
+.analysis-report-container {
+  display: grid;
+  grid-template-columns: 260px 1fr 280px;
+  height: calc(100vh - 220px); 
+  min-height: 540px;
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden; 
+}
+
+// ── Column Base Styles ─────────────────────────────────────────
+.report-col {
+  padding: 32px 24px;
+  overflow-y: auto; 
+  
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { 
+    background: rgba(255,255,255,0.05); 
+    border-radius: 4px; 
+  }
+}
+
+.col-left {
+  border-right: 1px solid $border-subtle;
+  background: rgba($bg-surface, 0.3);
+}
+.col-right {
+  border-left: 1px solid $border-subtle;
+  background: rgba($bg-surface, 0.3);
+}
+
+// ── Left Column: Navigation ────────────────────────────────────
+.section-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+
+  .nav-btn {
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-family: $font-display;
+    font-size: 15px;
+    font-weight: 500;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    &.active {
+      color: $accent-cyan;
+      background: rgba($accent-cyan, 0.05);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 20%;
+        bottom: 20%;
+        width: 3px;
+        background: $accent-cyan;
+        border-radius: 0 4px 4px 0;
+        box-shadow: 0 0 10px rgba($accent-cyan, 0.5);
+      }
+    }
+  }
+}
+
+// ── Middle Column: Dynamic Content ─────────────────────────────
+.main-content-wrapper {
+  color: $text-primary;
+  max-width: 720px;
+  margin: 0 auto;
+  
+  .rendered-content {
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: $text-primary;
+    }
+    p {
+      font-family: $font-mono;
+      font-size: 14px;
+      line-height: 1.7;
+      color: $text-secondary;
+      margin-bottom: 24px;
+    }
+
+    // Overview Tab
+    .score-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid $border-subtle;
+
+      .score-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba($accent-cyan, 0.05);
+        border: 2px solid $accent-cyan;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 20px rgba($accent-cyan, 0.2);
+
+        .score-value {
+          font-family: $font-display;
+          font-size: 32px;
+          font-weight: 800;
+          color: $text-primary;
+          line-height: 1;
+        }
+        .score-label {
+          font-family: $font-mono;
+          font-size: 10px;
+          text-transform: uppercase;
+          color: $accent-cyan;
+          margin-top: 4px;
+        }
+      }
+
+      .score-text h2 { margin-bottom: 8px; }
+      .score-text p { margin-bottom: 0; }
+    }
+
+    .info-block {
+      background: rgba($bg-surface, 0.5);
+      border: 1px solid $border-subtle;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+
+      h3 {
+        font-family: $font-mono;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: $accent-violet;
+        margin-bottom: 12px;
+      }
+      p { margin-bottom: 0; }
+    }
+
+    // Question Cards (Expanded for Schema)
+    .question-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .question-card {
+      background: rgba($bg-surface, 0.6);
+      border: 1px solid rgba($accent-cyan, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+
+      &.border-violet { border-color: rgba($accent-violet, 0.15); }
+
+      .q-text {
+        font-family: $font-display;
+        font-size: 16px;
+        color: $text-primary;
+        padding: 24px;
+        margin: 0;
+        background: rgba(255,255,255,0.02);
+        
+        strong { color: $accent-cyan; font-size: 18px; margin-right: 4px; }
+      }
+
+      .q-meta {
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        border-top: 1px solid $border-subtle;
+
+        .q-intention, .q-answer {
+          font-family: $font-mono;
+          font-size: 13px;
+          color: $text-secondary;
+          line-height: 1.6;
+
+          strong {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: $accent-violet;
+            margin-bottom: 6px;
+          }
+          
+          p { margin: 0; }
+        }
+        
+        .q-answer strong { color: $accent-cyan; }
+      }
+    }
+
+    // Timeline / Action Plan (Expanded for Tasks Array)
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      border-left: 2px solid $border-subtle;
+      padding-left: 24px;
+      margin-left: 10px;
+      margin-top: 24px;
+
+      .timeline-step {
+        position: relative;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: -31px;
+          top: 4px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: $bg-card;
+          border: 2px solid $accent-cyan;
+        }
+
+        .day-badge {
+          display: inline-block;
+          font-family: $font-mono;
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          background: rgba($accent-cyan, 0.1);
+          color: $accent-cyan;
+          padding: 4px 10px;
+          border-radius: 6px;
+          margin-bottom: 12px;
+        }
+
+        .step-focus { 
+          color: $text-primary; 
+          display: block; 
+          margin-bottom: 12px;
+          font-family: $font-display;
+          font-size: 18px;
+        }
+
+        .task-list {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+
+          li {
+            position: relative;
+            padding-left: 20px;
+            font-family: $font-mono;
+            font-size: 14px;
+            line-height: 1.6;
+            color: $text-secondary;
+            margin-bottom: 8px;
+
+            &::before {
+              content: '→';
+              position: absolute;
+              left: 0;
+              color: $accent-violet;
+              opacity: 0.7;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ── Right Column: Skill Gaps (Severity Colored) ────────────────
+.right-heading {
+  font-family: $font-display;
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: 20px;
+}
+
+.skill-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  .skill-pill {
+    font-family: $font-mono;
+    font-size: 13px;
+    padding: 8px 16px;
+    border: 1px solid $border-subtle;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.02);
+    transition: all 0.2s ease;
+    cursor: default;
+
+    // Severity Modifiers
+    &.severity-high {
+      color: $alert-red;
+      border-color: rgba($alert-red, 0.3);
+      background: rgba($alert-red, 0.05);
+    }
+    &.severity-medium {
+      color: $alert-orange;
+      border-color: rgba($alert-orange, 0.3);
+      background: rgba($alert-orange, 0.05);
+    }
+    &.severity-low {
+      color: $alert-green;
+      border-color: rgba($alert-green, 0.3);
+      background: rgba($alert-green, 0.05);
+    }
+
+    &:hover {
+      filter: brightness(1.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  }
+}
+
+// ── Animations ─────────────────────────────────────────────────
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+.fade-in-key { animation: subtleFade 0.3s ease-out; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subtleFade {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+// ── Responsive behavior ────────────────────────────────────────
+@media (max-width: 1024px) {
+  .analysis-report-container { grid-template-columns: 200px 1fr 200px; }
+}
+
+@media (max-width: 768px) {
+  .report-main-header { font-size: 28px; }
+
+  .analysis-report-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    overflow-y: auto;
+    height: auto;
+  }
+  
+  .col-left { border-right: none; border-bottom: 1px solid $border-subtle; padding: 16px; }
+  .col-right { border-left: none; border-top: 1px solid $border-subtle; padding: 16px; }
+  
+  .section-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-top: 0;
+    .nav-btn { white-space: nowrap; }
+  }
+}
