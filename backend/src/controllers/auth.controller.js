@@ -2,7 +2,7 @@ const userModel = require("../models/user.model")
 const blacklistTokenModel = require("../models/blacklist.models")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {JWT_SECRET} = require("../config/config")
+const { JWT_SECRET } = require("../config/config")
 
 /**
  * @name registerUserController
@@ -10,26 +10,26 @@ const {JWT_SECRET} = require("../config/config")
  * @access Public
  */
 
-async function registerUserController(req, res){
-    const {username, email, password} = req.body
+async function registerUserController(req, res) {
+    const { username, email, password } = req.body
 
-    if(!username || !email || !password){
+    if (!username || !email || !password) {
         return res.status(400).messege({
-            messege:"Please provide email, username nad password"
+            messege: "Please provide email, username nad password"
         })
     }
 
     const isAlreadyExists = await userModel.findOne({
-        $or:[
-            {username},
-            {email}
+        $or: [
+            { username },
+            { email }
         ]
     })
 
 
-    if(isAlreadyExists){
+    if (isAlreadyExists) {
         return res.status(400).json({
-            messege:"Account already exists"
+            messege: "Account already exists"
         })
     }
 
@@ -45,8 +45,8 @@ async function registerUserController(req, res){
     //Create a token
     const token = jwt.sign(
         {
-            id:user.id,
-            username:user.username
+            id: user.id,
+            username: user.username
         },
         JWT_SECRET,
         {
@@ -55,14 +55,20 @@ async function registerUserController(req, res){
     )
 
     //Save the token in the cookie
-    res.cookie("token", token)
+    // Example inside your backend login/signup route
+    res.cookie('token', yourGeneratedJwt, {
+        httpOnly: true, // Prevents XSS attacks
+        secure: true,   // REQUIRED: Must be true for cross-site cookies (Render uses HTTPS, so this is fine)
+        sameSite: 'none', // REQUIRED: Tells the browser it's okay to send this cookie to a different domain
+        maxAge: 7 * 24 * 60 * 60 * 1000 // e.g., 7 days
+    });
 
     res.status(201).json({
-        messege:"User registered successfully",
-        user:{
+        messege: "User registered successfully",
+        user: {
             id: user._id,
             username: user.username,
-            email:user.email
+            email: user.email
         }
     })
 }
@@ -73,49 +79,55 @@ async function registerUserController(req, res){
  * @access Public
  */
 
-async function loginUserController(req, res){
-    const {email, password} =  req.body
+async function loginUserController(req, res) {
+    const { email, password } = req.body
 
     const user = await userModel.findOne({
         email
     })
 
     //Check if the user exists
-    if(!user){
+    if (!user) {
         return res.status(400).json({
-            messege:"Invalid email and password"
+            messege: "Invalid email and password"
         })
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
         return res.status(400).json({
-            messege:"Invalid credentials"
+            messege: "Invalid credentials"
         })
     }
 
     //Create token
     const token = jwt.sign(
         {
-            id:user._id,
-            username:user.username
+            id: user._id,
+            username: user.username
         },
         JWT_SECRET,
         {
-            expiresIn:"1d"
+            expiresIn: "1d"
         }
     )
 
     //Save the token into the cookies
-    res.cookie("token", token)
+    // Example inside your backend login/signup route
+    res.cookie('token', yourGeneratedJwt, {
+        httpOnly: true, // Prevents XSS attacks
+        secure: true,   // REQUIRED: Must be true for cross-site cookies (Render uses HTTPS, so this is fine)
+        sameSite: 'none', // REQUIRED: Tells the browser it's okay to send this cookie to a different domain
+        maxAge: 7 * 24 * 60 * 60 * 1000 // e.g., 7 days
+    });
 
     res.status(200).json({
-        messege:"User logged in successfully",
-        user:{
-            id:user._id,
-            username:user.username,
-            email:user.email
+        messege: "User logged in successfully",
+        user: {
+            id: user._id,
+            username: user.username,
+            email: user.email
         }
     })
 }
@@ -126,10 +138,10 @@ async function loginUserController(req, res){
  * @access Public
  */
 
-async function logoutUserController(req, res){
+async function logoutUserController(req, res) {
     const token = req.cookies.token
 
-    if(token){
+    if (token) {
         await blacklistTokenModel.create({
             token
         })
@@ -137,7 +149,7 @@ async function logoutUserController(req, res){
 
     res.clearCookie("token")
     res.status(200).json({
-        messege:"User logged out successfully"
+        messege: "User logged out successfully"
     })
 }
 
@@ -147,12 +159,12 @@ async function logoutUserController(req, res){
  * @access Private
  */
 
-async function getMeController(req, res){
+async function getMeController(req, res) {
     const user = await userModel.findById(req.user.id)
     return res.status(200).json({
-        messege:"User details fetched successfully",
-        user:{
-            id:user._id,
+        messege: "User details fetched successfully",
+        user: {
+            id: user._id,
             username: user.username,
             email: user.email
         }
