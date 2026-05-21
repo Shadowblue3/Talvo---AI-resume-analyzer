@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useInterview } from '../hooks/useInterview';
 import AnalysisLoading from '../components/AnalysisLoading';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../auth/Auth.context';
 import '../home.scss';
 
 // ── Icons (Inline SVGs) ───────────
@@ -86,6 +87,8 @@ const Home = () => {
   const [jobDescription, setJobDescription] = useState('');
   const [selfDescription, setSelfDescription] = useState('');
 
+  const context = AuthContext()
+  const {user} = context
   const { loading, generateReport, reports, getAllReports } = useInterview()
   useEffect(() => {
     console.log(reports)
@@ -193,7 +196,7 @@ const Home = () => {
           <div className="user-profile">
             <div className="avatar">JD</div>
             <div className="user-info">
-              <span className="username">John Doe</span>
+              <span className="username">{user.username}</span>
               <span className="plan">Pro Member</span>
             </div>
           </div>
