@@ -95,7 +95,7 @@ const Home = () => {
 
   const { loading, generateReport, reports, getAllReports } = useInterview()
   useEffect(() => {
-    console.log(reports)
+    // console.log(reports)
   })
 
 
