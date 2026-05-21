@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    
+    <linearGradient id="primary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F0FF" />
+      <stop offset="100%" stop-color="#0057FF" />
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <rect width="512" height="512" rx="110" fill="url(#bg)" />
+  
+  <rect x="146" y="96" width="220" height="320" rx="16" fill="none" stroke="#334155" stroke-width="24" />
+  <line x1="196" y1="166" x2="266" y2="166" stroke="#334155" stroke-width="24" stroke-linecap="round" />
+  <line x1="196" y1="236" x2="316" y2="236" stroke="#334155" stroke-width="24" stroke-linecap="round" />
+  <line x1="196" y1="306" x2="286" y2="306" stroke="#334155" stroke-width="24" stroke-linecap="round" />
+  <line x1="196" y1="376" x2="246" y2="376" stroke="#334155" stroke-width="24" stroke-linecap="round" />
+
+  <path d="M 100 200 L 412 200 A 16 16 0 0 1 428 216 L 428 256 A 16 16 0 0 1 412 272 L 288 272 L 288 400 A 16 16 0 0 1 272 416 L 240 416 A 16 16 0 0 1 224 400 L 224 272 L 100 272 A 16 16 0 0 1 84 256 L 84 216 A 16 16 0 0 1 100 200 Z" fill="url(#primary)" />
+  
+  <circle cx="360" cy="236" r="12" fill="#FFFFFF" filter="url(#glow)" />
+  
+  <polygon points="360,236 440,160 440,312" fill="#00F0FF" opacity="0.2" />
+</svg>
