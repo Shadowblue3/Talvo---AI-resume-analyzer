@@ -209,8 +209,8 @@ const Home = () => {
               <span className="plan">Pro Member</span>
             </div>
           </div>
-          <button className="settings-btn" title="Logout" onClick={() => {handleLogoutfunction}}>
-            <img src="/your-logout-icon.svg" alt="Logout" style={{ width: '20px', height: '20px' }} />
+          <button className="settings-btn" title="Logout" onClick={handleLogoutfunction}>
+            <img src="/logout.svg" alt="Logout" style={{ width: '20px', height: '20px' }} />
           </button>
         </div>
       </aside>
