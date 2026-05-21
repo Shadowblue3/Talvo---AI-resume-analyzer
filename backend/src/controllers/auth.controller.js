@@ -56,7 +56,7 @@ async function registerUserController(req, res) {
 
     //Save the token in the cookie
     // Example inside your backend login/signup route
-    res.cookie('token', yourGeneratedJwt, {
+    res.cookie('token', token, {
         httpOnly: true, // Prevents XSS attacks
         secure: true,   // REQUIRED: Must be true for cross-site cookies (Render uses HTTPS, so this is fine)
         sameSite: 'none', // REQUIRED: Tells the browser it's okay to send this cookie to a different domain
@@ -115,7 +115,7 @@ async function loginUserController(req, res) {
 
     //Save the token into the cookies
     // Example inside your backend login/signup route
-    res.cookie('token', yourGeneratedJwt, {
+    res.cookie('token', token, {
         httpOnly: true, // Prevents XSS attacks
         secure: true,   // REQUIRED: Must be true for cross-site cookies (Render uses HTTPS, so this is fine)
         sameSite: 'none', // REQUIRED: Tells the browser it's okay to send this cookie to a different domain
