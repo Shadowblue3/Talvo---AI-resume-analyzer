@@ -1,7 +1,9 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useContext } from 'react';
 import { useInterview } from '../hooks/useInterview';
 import AnalysisLoading from '../components/AnalysisLoading';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../auth/Auth.context';
+import { useAuth } from '../../auth/hooks/useAuth';
 import '../home.scss';
 
 // ── Icons (Inline SVGs) ───────────
@@ -86,6 +88,11 @@ const Home = () => {
   const [jobDescription, setJobDescription] = useState('');
   const [selfDescription, setSelfDescription] = useState('');
 
+  const context = useContext(AuthContext)
+  const { user } = context
+
+  const {handleLogout} = useAuth()
+
   const { loading, generateReport, reports, getAllReports } = useInterview()
   useEffect(() => {
     console.log(reports)
@@ -146,6 +153,11 @@ const Home = () => {
     if (file) handleFile(file);
   };
 
+  const handleLogoutfunction = async ()=>{
+    const resposne = await handleLogout()
+    navigate("/login")
+  }
+
   // Handle submit
   const runAIAnalysis = async () => {
     const data = await generateReport({ jobDescription, selfDescription, resumeFile })
@@ -193,12 +205,12 @@ const Home = () => {
           <div className="user-profile">
             <div className="avatar">JD</div>
             <div className="user-info">
-              <span className="username">John Doe</span>
+              <span className="username">{user.username}</span>
               <span className="plan">Pro Member</span>
             </div>
           </div>
-          <button className="settings-btn" title="Settings">
-            <SettingsIcon />
+          <button className="settings-btn" title="Logout" onClick={() => {handleLogoutfunction}}>
+            <img src="/your-logout-icon.svg" alt="Logout" style={{ width: '20px', height: '20px' }} />
           </button>
         </div>
       </aside>
